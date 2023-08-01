@@ -1,9 +1,12 @@
+
 require('dotenv').config()
 const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
-const port = process.env.PORT;
 const cors = require('cors')
+const port = process.env.PORT;
+
+
 // middlewere
 app.use(cors())
 app.use(express.json())
@@ -23,23 +26,30 @@ const run = async () => {
 
     const BookCollection = client.db("books-project").collection("books")
     console.log("database connect succefull")
+    app.get("/book/:id", async (req, res) => {
+      const id = req.params.id
+      console.log("Id:", id)
 
+      const result = await BookCollection.findOne({ _id: new ObjectId(id) })
+      // console.log(result)
+      res.send(result)
+    })
     app.get("/books", async (req, res) => {
-      const cursor = BookCollection.find({})
+      const cursor = await BookCollection.find({})
       const product = await cursor.toArray()
       res.send({ status: true, data: product })
     })
     app.get("/books/limit", async (req, res) => {
-      const cursor = BookCollection.find({}).limit(10)
+      const cursor = await BookCollection.find({}).limit(10)
       const product = await cursor.toArray()
       res.send({ status: true, data: product })
     })
 
     app.get("/books/seacrch/:criteria", async (req, res) => {
       const criteria = req.params.criteria
-      const cursor = BookCollection.find({ criteria })
-      const product = await cursor.toArray()
-      res.send({ status: true, data: product })
+      const result = await BookCollection.find({ criteria }).toArray
+
+      res.send({ status: true, data: result })
     })
     app.post("/book", async (req, res) => {
       const book = req.body;
@@ -47,14 +57,7 @@ const run = async () => {
       console.log(result)
       res.send(result)
     })
-    // app.get("/book/:id", async (req, res) => {
-    //   const id = req.params.id
-    //   console.log("Id:", id)
 
-    //   const result = await BookCollection.findOne({ _id: ObjectId(id) })
-    //   console.log(result)
-    //   res.send(result)
-    // })
     app.delete('/book/:id', async (req, res) => {
       const id = req.params.id
 

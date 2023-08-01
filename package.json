@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mofassel-hosain",
   "license": "ISC",
@@ -13,7 +14,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongodb": "^5.7.0"
+    "mongodb": "^5.7.0",
+    "vercel": "^31.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
